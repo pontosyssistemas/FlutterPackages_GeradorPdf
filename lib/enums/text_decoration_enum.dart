@@ -1,0 +1,1 @@
+enum TextDecorationEnum { none, underline, overline, lineThrough }
