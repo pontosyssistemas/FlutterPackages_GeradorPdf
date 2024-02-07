@@ -334,13 +334,13 @@ class TipoParametro {
         "Nome": nome,
       };
 
-  factory TipoParametro.dromJson(Map<String, dynamic> json) {
+  factory TipoParametro.fromJson(Map<String, dynamic> json) {
     return TipoParametro(id: json["Id"], nome: json["Nome"]);
   }
 
   static List<TipoParametro> fromJsonToList(Iterable list) {
     return List<TipoParametro>.from(
-        list.map((model) => TipoParametro.dromJson(model)));
+        list.map((model) => TipoParametro.fromJson(model)));
   }
 
   bool get ehParametroData {
