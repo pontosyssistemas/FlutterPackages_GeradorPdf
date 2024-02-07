@@ -287,6 +287,56 @@ class TipoParametro {
         "Id": id,
         "Nome": nome,
       };
+
+  factory TipoParametro.dromJson(Map<String, dynamic> json) {
+    return TipoParametro(id: json["Id"], nome: json["Nome"]);
+  }
+
+  static List<TipoParametro> fromJsonToList(Iterable list) {
+    return List<TipoParametro>.from(
+        list.map((model) => TipoParametro.dromJson(model)));
+  }
+
+  bool get ehParametroData {
+    return tipoEnum == TiposParametros.data ||
+        tipoEnum == TiposParametros.dataInicial7Dias ||
+        tipoEnum == TiposParametros.dataInicial30Dias ||
+        tipoEnum == TiposParametros.dataFinal7Dias ||
+        tipoEnum == TiposParametros.dataFinal30Dias;
+  }
+
+  TiposParametros get tipoEnum {
+    switch (nome) {
+      case "Texto":
+        return TiposParametros.texto;
+      case "Sim/Não":
+        return TiposParametros.simNao;
+      case "Numérico":
+        return TiposParametros.numerico;
+      case "Monetário":
+        return TiposParametros.monetario;
+      case "Data":
+        return TiposParametros.data;
+      case "Data inicial 7 dias":
+        return TiposParametros.dataInicial7Dias;
+      case "Data inicial 30 dias":
+        return TiposParametros.dataInicial30Dias;
+      case "Data final 7 dias":
+        return TiposParametros.dataFinal7Dias;
+      case "Data final 30 dias":
+        return TiposParametros.dataFinal30Dias;
+      case "CPF":
+        return TiposParametros.cpf;
+      case "CNPJ":
+        return TiposParametros.cnpj;
+      case "Filial":
+        return TiposParametros.filial;
+      case "Filial logada":
+        return TiposParametros.filialLogada;
+      default:
+        return TiposParametros.texto;
+    }
+  }
 }
 
 class TituloRelatorio {
