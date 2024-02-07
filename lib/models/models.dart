@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/material.dart';
 import 'package:gerador_pdf/enums/enums.dart';
@@ -123,13 +125,22 @@ class EstilosTabela {
     this.repetirCabecalho = true,
   });
 
-  static Map<String, dynamic> toJsonString(EstilosTabela source) {
+  static Map<String, dynamic> toJson(EstilosTabela source) {
     return {
       'Cabecalho': EstilosTexto.toJson(source.cabecalho),
       'Linhas': EstilosTexto.toJson(source.linhas),
       'EhListrada': source.ehListrada,
       'RepetirCabecalhoNasPaginas': source.repetirCabecalho,
     };
+  }
+
+  static String toJsonString(EstilosTabela source) {
+    return jsonEncode({
+      'Cabecalho': EstilosTexto.toJson(source.cabecalho),
+      'Linhas': EstilosTexto.toJson(source.linhas),
+      'EhListrada': source.ehListrada,
+      'RepetirCabecalho': source.repetirCabecalho,
+    });
   }
 
   factory EstilosTabela.fromJsonString(Map<String, dynamic> json) {
@@ -214,6 +225,34 @@ class EstilosTituloSubTituloRelatorio extends EstilosTexto {
             orElse: () => TextDecorationEnum.none));
   }
 
+  get getAlinhamento {
+    switch (alinhamento) {
+      case AlignmentEnum.left:
+        return Alignment.topLeft;
+      case AlignmentEnum.center:
+        return Alignment.center;
+      case AlignmentEnum.right:
+        return Alignment.topRight;
+      default:
+        return Alignment.center;
+    }
+  }
+
+  get getDecoration {
+    switch (textDecoration) {
+      case TextDecorationEnum.none:
+        return TextDecoration.none;
+      case TextDecorationEnum.lineThrough:
+        return TextDecoration.lineThrough;
+      case TextDecorationEnum.underline:
+        return TextDecoration.underline;
+      case TextDecorationEnum.overline:
+        return TextDecoration.overline;
+      default:
+        return TextDecoration.none;
+    }
+  }
+
   pw.Alignment getAlinhamentoPdf() {
     switch (alinhamento) {
       case AlignmentEnum.left:
@@ -266,6 +305,13 @@ class SubtituloRelatorio {
       'EstilosSubtitulo':
           EstilosTituloSubTituloRelatorio.toJsonString(source.estilos),
     };
+  }
+
+  static String toJsonString(SubtituloRelatorio source) {
+    return jsonEncode({
+      'Texto': source.texto,
+      'Estilos': EstilosTituloSubTituloRelatorio.toJsonString(source.estilos),
+    });
   }
 
   static SubtituloRelatorio? fromJsonString(Map<String, dynamic>? json) {
@@ -351,6 +397,13 @@ class TituloRelatorio {
       'EstilosTitulo':
           EstilosTituloSubTituloRelatorio.toJsonString(source.estilos)
     };
+  }
+
+  static String toJsonString(TituloRelatorio source) {
+    return jsonEncode({
+      'Texto': source.texto,
+      'Estilos': EstilosTituloSubTituloRelatorio.toJsonString(source.estilos)
+    });
   }
 
   factory TituloRelatorio.fromJsonString(Map<String, dynamic> json) {
