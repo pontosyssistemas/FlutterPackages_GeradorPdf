@@ -3,13 +3,11 @@ library gerador_pdf;
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
-import 'package:gerador_pdf/dtos/subtitulo_relatorio.dart';
-import 'package:gerador_pdf/dtos/titulo_relatorio.dart';
 import 'package:gerador_pdf/utils/extensions.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:gerador_pdf/dtos/relatorio.dart';
+import 'package:gerador_pdf/models/models.dart';
 import 'package:printing/printing.dart';
 
 class PdfBase64 {
