@@ -379,6 +379,10 @@ class TipoParametro {
         return TiposParametros.filial;
       case "Filial logada":
         return TiposParametros.filialLogada;
+      case "Sim/Não (Padrão: não)":
+        return TiposParametros.simNaoPadraoNao;
+      case "Data (Permite nulo)":
+        return TiposParametros.dataPermiteNulo;
       default:
         return TiposParametros.texto;
     }

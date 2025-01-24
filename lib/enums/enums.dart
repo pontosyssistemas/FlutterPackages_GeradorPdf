@@ -16,4 +16,6 @@ enum TiposParametros {
   cnpj,
   filial,
   filialLogada,
+  simNaoPadraoNao,
+  dataPermiteNulo,
 }

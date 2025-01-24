@@ -1,6 +1,7 @@
 library gerador_pdf;
 
 import 'dart:convert';
+import 'dart:js_interop';
 
 import 'package:collection/collection.dart';
 import 'package:gerador_pdf/utils/extensions.dart';
@@ -207,8 +208,7 @@ class PdfBase64 {
         children: colunas, repeat: relatorio.estilosTabela.repetirCabecalho);
   }
 
-  Future<List<pw.TableRow>> _construirLinhasPdf(
-      RelatorioDTO relatorio) async {
+  Future<List<pw.TableRow>> _construirLinhasPdf(RelatorioDTO relatorio) async {
     var tabela = relatorio.dados.dados;
     List<pw.TableRow> rows = [];
 
@@ -288,8 +288,50 @@ class PdfBase64 {
 
   String _obterSubtituloFormatado(
       SubtituloRelatorio subtitulo, List<ParametroRelatorioGerado> parametros) {
-    final variaveis = subtitulo.texto.getVariables();
     var texto = [subtitulo.texto][0];
+
+    if (!texto.isNull && texto.toLowerCase().contains("iif")) {
+      final condicoes =
+          texto.split("::").map((condicao) => condicao.trim()).toList();
+
+      for (var condicao in condicoes) {
+        if (condicao.startsWith("IIF")) {
+          final regex = RegExp(r'IIF\s+(.+?)\s+\?\?\s+"(.+)"');
+          final match = regex.firstMatch(condicao);
+
+          if (match != null) {
+            final condicaoLogica = match.group(1)!;
+            final resultadoCondicao = match.group(2)!;
+
+            final variaveisCondicao = RegExp(r"\$\w+")
+                .allMatches(condicaoLogica)
+                .map((m) => m.group(0)!)
+                .toList();
+            final condicaoAtendida = variaveisCondicao.every((variavel) {
+              final parametro = parametros
+                  .firstWhereOrNull((item) => item.parametro == variavel);
+              return parametro != null &&
+                  parametro.valor != null &&
+                  parametro.valor.toString().isNotEmpty;
+            });
+
+            if (condicaoAtendida) {
+              return _getSubtituloFormatado(
+                  resultadoCondicao, subtitulo, parametros);
+            }
+          }
+        } else {
+          return condicao.replaceAll("\"", "").trim();
+        }
+      }
+    }
+
+    return _getSubtituloFormatado(texto, subtitulo, parametros);
+  }
+
+  String _getSubtituloFormatado(String txtParam, SubtituloRelatorio subtitulo,
+      List<ParametroRelatorioGerado> parametros) {
+    final variaveis = subtitulo.texto.getVariables();
 
     for (var variavel in variaveis) {
       var parametro = parametros
@@ -306,10 +348,10 @@ class PdfBase64 {
           valorParametro = parametro.valor.toString();
         }
 
-        texto = texto.replaceAll("\${$variavel}", valorParametro);
+        txtParam = txtParam.replaceAll("\${$variavel}", valorParametro);
       }
     }
 
-    return texto;
+    return txtParam;
   }
 }
