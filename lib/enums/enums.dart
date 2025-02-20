@@ -18,4 +18,5 @@ enum TiposParametros {
   filialLogada,
   simNaoPadraoNao,
   dataPermiteNulo,
+  caixaSelecao
 }

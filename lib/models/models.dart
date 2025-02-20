@@ -383,6 +383,8 @@ class TipoParametro {
         return TiposParametros.simNaoPadraoNao;
       case "Data (Permite nulo)":
         return TiposParametros.dataPermiteNulo;
+      case "Caixa de seleção":
+        return TiposParametros.caixaSelecao;
       default:
         return TiposParametros.texto;
     }
