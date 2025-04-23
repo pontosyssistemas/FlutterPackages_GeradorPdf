@@ -310,6 +310,12 @@ class PdfBase64 {
             final condicaoAtendida = variaveisCondicao.every((variavel) {
               final parametro = parametros
                   .firstWhereOrNull((item) => item.parametro == variavel);
+                  
+              if(condicaoLogica.contains("==")){
+                final comparator = condicaoLogica.split(" == ")[1];
+                if(parametro == null || parametro.valor.toString() != comparator) return false;
+              }
+              
               return parametro != null &&
                   parametro.valor != null &&
                   parametro.valor.toString().isNotEmpty;
