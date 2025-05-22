@@ -183,6 +183,9 @@ class PdfBase64 {
   Future<pw.TableRow> _construirColunasPdf(RelatorioDTO relatorio) async {
     List<pw.Padding> colunas = [];
 
+    final fontBold = await fontPdfBold;
+    final fontRegular = await fontPdfRegular;
+
     await relatorio.dados.dados.first.keys.forEach((key) async {
       colunas.add(
         pw.Padding(
@@ -192,8 +195,8 @@ class PdfBase64 {
             key,
             style: pw.TextStyle(
               font: relatorio.estilosTabela.cabecalho.negrito
-                  ? await fontPdfBold
-                  : await fontPdfRegular,
+                  ? fontBold
+                  : fontRegular,
               fontSize: fontSizeHeadersTable,
             ),
             maxLines: 1,
