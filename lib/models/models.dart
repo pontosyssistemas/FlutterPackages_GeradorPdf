@@ -8,6 +8,7 @@ import 'package:gerador_pdf/utils/extensions.dart';
 class RelatorioDTO {
   TituloRelatorio titulo;
   SubtituloRelatorio? subTitulo;
+  List<SubtituloRelatorio>? subtituloLinhasExtras;
   EstilosTabela estilosTabela;
   DadosRelatorioDTO dados;
   bool orientacao;
@@ -15,6 +16,7 @@ class RelatorioDTO {
   RelatorioDTO({
     required this.titulo,
     this.subTitulo,
+    this.subtituloLinhasExtras,
     required this.dados,
     required this.estilosTabela,
     required this.orientacao,
@@ -34,6 +36,7 @@ class RelatorioDTO {
   Map<String, dynamic> toJson() => {
         'Titulo': TituloRelatorio.toJson(titulo),
         'Subtitulo': subTitulo ?? SubtituloRelatorio.toJson(subTitulo!),
+        'SubtituloLinhasExtras': subtituloLinhasExtras != null ? subtituloLinhasExtras!.map((e) => SubtituloRelatorio.toJson(e)).toList() : null,
         'EstilosTabela': EstilosTabela.toJsonString(estilosTabela),
         'Orientacao': orientacao,
       };
@@ -42,6 +45,7 @@ class RelatorioDTO {
     return RelatorioDTO(
       titulo: TituloRelatorio.fromJsonString(json.decode("Titulo")),
       subTitulo: SubtituloRelatorio.fromJsonString(json.decode("Subtitulo")),
+      subtituloLinhasExtras:  SubtituloRelatorio.fromJsonStringList(json.decode("SubtituloLinhasExtras")),
       dados: DadosRelatorioDTO.fromJson(json["Dados"]),
       estilosTabela: EstilosTabela.fromJsonString(json.decode("EstilosTabela")),
       orientacao: json["Orientacao"],
@@ -320,6 +324,12 @@ class SubtituloRelatorio {
       texto: json["Texto"],
       estilos: EstilosTituloSubTituloRelatorio.fromJsonString(json["Estilos"]),
     );
+  }
+
+  static List<SubtituloRelatorio>? fromJsonStringList(List<Map<String, dynamic>>? json) {
+    if(json == null) return null;
+
+    return json.map((e) => SubtituloRelatorio.fromJsonString(e)!).toList();
   }
 }
 
