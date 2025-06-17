@@ -137,16 +137,6 @@ class PdfBase64 {
     );
   }
 
-  Future<List<pw.Widget>> _construirLinhasExtrasSubtituloPdf(List<SubtituloRelatorio> linhasExtrasRelatorio, List<ParametroRelatorioGerado> parametros) async {
-    final linhasExtras = <pw.Widget>[];
-
-    for (var linhaExtra in linhasExtrasRelatorio) {
-      linhasExtras.add(await _construirSubTituloPdf(linhaExtra, parametros));
-    }
-
-    return linhasExtras;
-  }
-
   Future<Map<int, List<pw.TableRow>>> _construirDataTablePdf(
       RelatorioDTO relatorio) async {
     final rowsTable = await _construirLinhasPdf(relatorio);
