@@ -44,6 +44,15 @@ class PdfBase64 {
     final subtitulo = relatorio.subTitulo != null
         ? await _construirSubTituloPdf(relatorio.subTitulo!, parametros)
         : pw.Container();
+
+    List<pw.Widget> linhasExtras = [];
+    if(relatorio.subtituloLinhasExtras != null && relatorio.subtituloLinhasExtras!.isNotEmpty) {
+      for (var linhaExtr in relatorio.subtituloLinhasExtras!) {
+        linhasExtras.add(await _construirSubTituloPdf(linhaExtr, parametros));
+      }
+    }
+
+
     if (relatorio.dados.dados.isNotEmpty) {
       final rows = await _construirDataTablePdf(relatorio);
       return List<pw.Widget>.generate(rows.keys.length, (index) {
@@ -55,6 +64,7 @@ class PdfBase64 {
                   children: [
                     titulo,
                     subtitulo,
+                    if(linhasExtras.isNotEmpty) ...linhasExtras,
                   ],
                 )),
           pw.Table(
@@ -72,7 +82,7 @@ class PdfBase64 {
                 children: [
                   titulo,
                   subtitulo,
-                  if(relatorio.subtituloLinhasExtras?.isNotEmpty ?? false) ...(await _construirLinhasExtrasSubtituloPdf(relatorio.subtituloLinhasExtras!, parametros))
+                  if(linhasExtras.isNotEmpty) ...linhasExtras,
                 ],
               )),
           pw.Container(
