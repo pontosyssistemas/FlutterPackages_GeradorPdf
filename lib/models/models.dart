@@ -42,10 +42,12 @@ class RelatorioDTO {
       };
 
   RelatorioDTO fromJson(Map<String, dynamic> json) {
+    print(json["SubtituloLinhasExtras"]);
+
     return RelatorioDTO(
       titulo: TituloRelatorio.fromJsonString(json.decode("Titulo")),
       subTitulo: SubtituloRelatorio.fromJsonString(json.decode("Subtitulo")),
-      subtituloLinhasExtras:  SubtituloRelatorio.fromJsonStringList(json.decode("SubtituloLinhasExtras")),
+      subtituloLinhasExtras:  SubtituloRelatorio.fromJsonStringList(json.decode("SubtituloLinhasExtras") as List<Map<String, dynamic>>),
       dados: DadosRelatorioDTO.fromJson(json["Dados"]),
       estilosTabela: EstilosTabela.fromJsonString(json.decode("EstilosTabela")),
       orientacao: json["Orientacao"],
